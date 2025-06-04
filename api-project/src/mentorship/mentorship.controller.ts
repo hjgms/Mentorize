@@ -1,7 +1,8 @@
-import { Controller, Post, Get, Delete, Body, Param, UseGuards, Request } from '@nestjs/common';
+import { Controller, Post, Get, Delete, Body, Patch, Param, UseGuards, Request } from '@nestjs/common';
 import { MentorshipService } from './mentorship.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CreateMentorshipDto } from './dto/create-mentorship.dto';
+import { ConfirmMentorshipDto } from './dto/confirm-mentorship.dto';
 
 @UseGuards(JwtAuthGuard)
 @Controller('mentorships')
@@ -22,4 +23,14 @@ export class MentorshipController {
   remove(@Param('id') id: string, @Request() req) {
     return this.mentorshipService.remove(+id, req.user.userId);
   }
+
+  @Patch(':id/confirm')
+  confirm(
+    @Param('id') id: string,
+    @Body() dto: ConfirmMentorshipDto,
+    @Request() req,
+  ) {
+    return this.mentorshipService.confirm(+id, req.user.userId, dto.isConfirmed);
+  }
+
 }

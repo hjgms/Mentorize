@@ -38,4 +38,22 @@ export class MentorshipService {
       },
     });
   }
+
+  async confirm(id: number, mentorId: number, isConfirmed: boolean) {
+    const mentorship = await this.prisma.mentorshipRequest.findUnique({
+      where: { id },
+    });
+
+    if (!mentorship || mentorship.mentorId !== mentorId) {
+      throw new Error('Mentorship not found or unauthorized');
+    }
+
+    return this.prisma.mentorshipRequest.update({
+      where: { id },
+      data: {
+        isConfirmed,
+      },
+    });
+  }
+
 }

@@ -34,9 +34,11 @@ model User {
 model MentorshipRequest {
   id          Int      @id @default(autoincrement())
   description String
-  duration    Int      // duração em minutos
+  duration    Int
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  isConfirmed Boolean  @default(false) // novo campo
 
   student     User     @relation("StudentMentorships", fields: [studentId], references: [id])
   studentId   Int
